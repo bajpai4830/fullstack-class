@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0%;
+            padding: 0%;
+        }
+        .container{
+            display: flex;
+            flex-direction: column;
+            background-color: black;
+        }
+        .img {
+            width: 70%;
+            max-width: 1000px;
+            height: auto;
+            margin: auto;
+            padding: 10px;
+            position: sticky;
+            top: 10px;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        h2 {
+            color: white;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            text-align: center;
+            font-size: 70px;
+            letter-spacing: 12px;
+            font-weight: 900;
+            padding: 25px 0;
+            text-shadow: 0 0 20px rgba(255,255,255,0.4);
+        }
+        h2::after {
+            content: "";
+            display: block;
+            width: 180px;
+            height: 2px;
+            background: white;
+            margin: 20px auto 0;
+        }
+        .scroll {
+    color: #777;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    margin: 10px 0 40px;
+}
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <h2>MOON KNIGHT</h2>
+        <div class="scroll">
+    SCROLL
+</div>
+        <img class="img" src="img1.jpg" alt="" id="i1">
+        <img class="img" src="img2.jpg" alt="" id="i2">
+        <img class="img" src="img4.jpg" alt="" id="i3">
+        <img class="img" src="img5.jpg" alt="" id="i4"> 
+        <img class="img" src="img3.jpg" alt="" id="i5">
+        <img class="img" src="img6.jpg" alt="" id="i6">
+        <img class="img" src="img7.jpg" alt="" id="i7">
+    </div>
+</body>
+</html>

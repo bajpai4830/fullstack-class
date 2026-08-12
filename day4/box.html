@@ -1,48 +1,54 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>box</title>
     <style>
-        
-        .container{
-            display: block;
-            unicode-bidi: isolate;
-        }
-        .box{
-            height: 150px;
-            width: 150px;
-            color: white;
-        }
-        #box1{
-            color: white;
-            background-color:red;
-        }
-        #box2{
-            background-color: aqua;
-        }
-        #box3{
-            background-color: brown;
-        }
-        #box4{
-            background-color: green;
-        }
-        #box5{
-            background-color: blue;
-        }
-        
+      .container {
+        display: block;
+        unicode-bidi: isolate;
+      }
+      .box {
+        height: 150px;
+        border: 2px solid black;
 
+        /* width: 150px; */
+        color: white;
+        border-color: black;
+        position: relative;
+      }
+      #box1 {
+        color: white;
+        background-color: red;
+        position: sticky;
+      }
+      #box2 {
+        background-color: aqua;
+      }
+      #box3 {
+        background-color: brown;
+      }
+      #box4 {
+        background-color: green;
+      }
+      #box5 {
+        background-color: blue;
+      }
+      #box6 {
+        background-color: indianred;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-    <div class="box" id="box1">box 1</div>
-    <div class="box" id="box2">box 2</div>
-    <div  class="box" id="box3">box 3</div>
-    <div class="box" id="box4">box 4</div>
-    <div  class="box" id="box5">box 5</div>
-    <div class="box" id="box6">box 6</div>
+      <div class="box" id="box1">box 1</div>
+      <div class="box" id="box2">box 2</div>
+      <div class="box" id="box3">box 3</div>
+      <div class="box" id="box4">box 4</div>
+      <div class="box" id="box5">box 5</div>
+      <div class="box" id="box6">box 6</div>
     </div>
-</body>
+  </body>
 </html>
+box 5

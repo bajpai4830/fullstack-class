@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    background:
+        radial-gradient(circle at 50% 20%, #171b1d 0%, #050607 45%, #000 100%);
+    min-height: 100vh;
+}
+
+h2 {
+    color: white;
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 70px;
+    letter-spacing: 12px;
+    font-weight: 900;
+    padding-top: 25px;
+    text-shadow: 0 0 20px rgba(255,255,255,0.4);
+}
+
+h2::after {
+    content: "";
+    display: block;
+    width: 180px;
+    height: 2px;
+    background: white;
+    margin: 20px auto 0;
+}
+
+.subtitle {
+    color: #999;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    letter-spacing: 8px;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.scroll {
+    color: #666;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    margin: 25px 0 40px;
+}
+
+.img {
+    width: 70%;
+    max-width: 1000px;
+    height: auto;
+    margin: auto;
+    padding: 10px;
+    position: sticky;
+    border-radius: 4px;
+}
+
+#i1 { top: 10px; }
+#i2 { top: 20px; }
+#i3 { top: 30px; }
+#i4 { top: 40px; }
+#i5 { top: 50px; }
+#i6 { top: 60px; }
+#i7 { top: 70px; }
+
+.end {
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+}
+
+.end h3 {
+    font-size: 50px;
+    letter-spacing: 10px;
+    font-family: Georgia, serif;
+}
+
+.end p {
+    margin-top: 15px;
+    color: #777;
+    letter-spacing: 5px;
+    font-family: Arial, sans-serif;
+}</style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>MOON KNIGHT</h2>
+    <p class="subtitle">THE FIST OF KHONSHU</p>
+    <div class="scroll">SCROLL ↓</div>
+
+    <img class="img" src="img1.jpg" id="i1">
+    <img class="img" src="img2.jpg" id="i2">
+    <img class="img" src="img4.jpg" id="i3">
+    <img class="img" src="img5.jpg" id="i4">
+    <img class="img" src="img3.jpg" id="i5">
+    <img class="img" src="img6.jpg" id="i6">
+    <img class="img" src="img7.jpg" id="i7">
+
+    <div class="end">
+        <h3>MOON KNIGHT</h3>
+        <p>THE NIGHT BELONGS TO HIM.</p>
+    </div>
+
+</div>
+
+</body>
+</html>
