@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gradient Text Box</title>
+
+    <style>
+        
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .box {
+            width: 400px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+        }
+
+        .box h1 {
+            font-size: 100px;
+            font-weight: bold;
+
+            background: linear-gradient(
+                90deg,
+                white,
+                pink,
+                hotpink,
+                white
+            );
+
+            background-clip: text;
+            -webkit-background-clip: text;
+            
+            color: transparent;
+            -webkit-text-fill-color:transparent;
+        }
+
+        .line {
+            width: 250px;
+            height: 1px;
+
+            background: linear-gradient(
+                90deg,
+                white,
+                pink,
+                hotpink,
+                white
+            );
+
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="box">
+            <h1>BOX</h1>
+        </div>
+
+        <div class="line"></div>
+
+    </div>
+
+</body>
+</html>
