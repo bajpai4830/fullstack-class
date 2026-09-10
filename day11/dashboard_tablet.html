@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DashBoard Grid</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .wrapper {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-areas:
+                "header header header"
+                "sidebar sidebar sidebar"
+                "card1 card2 card3"
+                "card4 card5"
+                "footer footer footer";
+            gap: 10px;
+            max-width: 900px;
+            margin: 20px auto;
+        }
+
+        .box {
+            min-height: 120px;
+            border: 2px solid black;
+            box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.2);
+            background-color: peachpuff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .box:hover {
+         transform: scale(1.03);
+      }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="box" style="grid-area: header;">Header</div>
+        <div class="box" style="grid-area: sidebar;">Sidebar</div>
+        <div class="box" style="grid-area: main;">Main Content</div>
+        <div class="box" style="grid-area: card1;">Card 1</div>
+        <div class="box" style="grid-area: card2;">Card 2</div>
+        <div class="box" style="grid-area: card3;">Card 3</div>
+        <div class="box" style="grid-area: card4;">Card 4</div>
+        <div class="box" style="grid-area: card5;">Card 5</div>
+        <div class="box" style="grid-area: footer;">Footer</div>
+    </div>
+
+</body>
+
+</html>
