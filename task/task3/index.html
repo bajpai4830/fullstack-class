@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A responsive AdminPro SaaS analytics dashboard." />
+    <title>AdminPro · Analytics Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+            colors: {
+              page: '#F1F5F9', sidebar: '#0F172A', sidebarText: '#CBD5E1',
+              active: '#4F46E5', heading: '#0F172A', body: '#64748B',
+              line: '#E2E8F0', success: '#16A34A', danger: '#DC2626', warning: '#D97706'
+            },
+            boxShadow: { card: '0 1px 2px rgba(15, 23, 42, .04)' }
+          }
+        }
+      };
+    </script>
+    <style>
+      html { scroll-behavior: smooth; }
+      body { min-width: 320px; }
+      .chart-grid { background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px), linear-gradient(to bottom, #e2e8f0 1px, transparent 1px); background-size: 25% 25%; }
+      .bar { transform-origin: bottom; animation: grow .65s ease-out both; }
+      @keyframes grow { from { transform: scaleY(.15); } to { transform: scaleY(1); } }
+    </style>
+  </head>
+  <body class="bg-page font-sans text-heading antialiased min-[768px]:flex min-[768px]:min-h-screen">
+    <div id="sidebar-overlay" class="fixed inset-0 z-40 hidden bg-slate-950/40 backdrop-blur-[1px] min-[768px]:hidden"></div>
+
+    <!-- Sidebar stays visible and sticky from tablet width onward. -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex w-60 -translate-x-full flex-col bg-sidebar px-3 py-5 text-sidebarText transition-transform duration-200 min-[768px]:sticky min-[768px]:top-0 min-[768px]:h-screen min-[768px]:translate-x-0">
+      <div class="mb-9 flex items-center justify-between px-2">
+        <a href="#" class="flex items-center gap-3 text-base font-semibold text-white">
+          <span class="grid h-9 w-9 place-items-center rounded-xl bg-blue-500 shadow-lg shadow-blue-950/40" aria-hidden="true">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/><path d="M15 3h6v6"/></svg>
+          </span>
+          AdminPro
+        </a>
+        <button id="close-sidebar" class="grid h-9 w-9 place-items-center rounded-lg text-slate-300 hover:bg-slate-800 min-[768px]:hidden" aria-label="Close menu">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+
+      <nav aria-label="Main navigation" class="space-y-1.5">
+        <a href="#dashboard" class="flex items-center gap-3 rounded-lg bg-active px-3 py-2.5 text-sm font-medium text-white shadow-sm">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard
+        </a>
+        <a href="#analytics" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition hover:bg-slate-800 hover:text-white">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5m5 14v-7m5 7V8m5 11V3"/></svg>Analytics
+        </a>
+        <a href="#users" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition hover:bg-slate-800 hover:text-white">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0M16 11a3 3 0 1 0-1.1-5.8M17.5 20a5.5 5.5 0 0 0-2.8-4.8"/></svg>Users
+        </a>
+        <a href="#orders" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition hover:bg-slate-800 hover:text-white">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h2l2.4 11.3a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H7"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>Orders
+        </a>
+        <a href="#products" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition hover:bg-slate-800 hover:text-white">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3 7 4v10l-7 4-7-4V7l7-4Z"/><path d="m5 7 7 4 7-4M12 11v10"/></svg>Products
+        </a>
+        <a href="#settings" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition hover:bg-slate-800 hover:text-white">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.2 2.2-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2h-3.1v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1-2.2-2.2.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H5v-3.1h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1 2.2-2.2.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5V3.5h3.1v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1 2.2 2.2-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.2V15h-.2a1.7 1.7 0 0 0-1.5 1Z"/></svg>Settings
+        </a>
+      </nav>
+
+      <div class="mt-auto border-t border-slate-800 pt-4">
+        <div class="flex items-center gap-3 rounded-lg px-2 py-2">
+          <div class="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-amber-200 to-orange-400 text-xs font-bold text-amber-950">AT</div>
+          <div class="min-w-0"><p class="truncate text-sm font-medium text-white">Ayush Bajpai </p><p class="text-xs text-slate-400">Admin</p></div>
+          <button class="ml-auto text-slate-400 hover:text-white" aria-label="Account settings"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="min-w-0 flex-1">
+      <header class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-line bg-white px-4 min-[768px]:px-8">
+        <div class="flex min-w-0 flex-1 items-center gap-3">
+          <button id="open-sidebar" class="grid h-10 w-10 shrink-0 place-items-center rounded-lg text-heading hover:bg-slate-100 min-[768px]:hidden" aria-label="Open menu" aria-expanded="false">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          <label class="hidden w-full max-w-sm items-center gap-2 text-body sm:flex">
+            <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.2-4.2"/></svg>
+            <input class="w-full bg-transparent py-2 text-sm outline-none placeholder:text-slate-400" type="search" placeholder="Search anything..." aria-label="Search" />
+          </label>
+          <span class="text-base font-semibold text-heading sm:hidden">AdminPro</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <button class="relative grid h-10 w-10 place-items-center rounded-lg text-body hover:bg-slate-100" aria-label="Notifications">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span class="absolute right-2 top-2 h-2 w-2 rounded-full bg-danger ring-2 ring-white"></span>
+          </button>
+          <button class="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-sky-200 to-indigo-300 text-xs font-bold text-indigo-950" aria-label="Open account menu">AT</button>
+        </div>
+      </header>
+
+      <main id="dashboard" class="p-4 sm:p-6 min-[768px]:p-8">
+        <div class="mb-7 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+          <div><p class="mb-1 text-sm font-medium text-body">Overview</p><h1 class="text-2xl font-bold tracking-tight text-heading">Dashboard</h1></div>
+          <button class="inline-flex w-fit items-center gap-2 rounded-lg border border-line bg-white px-3.5 py-2 text-sm font-medium text-heading shadow-card transition hover:border-indigo-200 hover:bg-indigo-50"><svg class="h-4 w-4 text-active" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Export report</button>
+        </div>
+
+        <!-- Base is one column; md is two and lg is the required four-column KPI layout. -->
+        <section aria-label="Key metrics" class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+          <article class="rounded-xl border border-line bg-white p-5 shadow-card"><div class="mb-4 flex items-start justify-between"><span class="grid h-10 w-10 place-items-center rounded-lg bg-emerald-50 text-success"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 5 6v5c0 4.6 3 8.5 7 10 4-1.5 7-5.4 7-10V6l-7-3Z"/><path d="M9 12h6M12 9v6"/></svg></span><span class="text-xs font-medium text-success">+12.5%</span></div><p class="text-sm font-medium text-body">Total Revenue</p><p class="mt-1 text-[28px] font-bold tracking-tight text-heading">₹1,24,532</p><p class="mt-2 flex items-center gap-1 text-xs text-success"><span>↑</span> vs. last month</p></article>
+          <article class="rounded-xl border border-line bg-white p-5 shadow-card"><div class="mb-4 flex items-start justify-between"><span class="grid h-10 w-10 place-items-center rounded-lg bg-blue-50 text-blue-600"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h2l2.4 11.3a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H7"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg></span><span class="text-xs font-medium text-success">+8.2%</span></div><p class="text-sm font-medium text-body">Total Orders</p><p class="mt-1 text-[28px] font-bold tracking-tight text-heading">892</p><p class="mt-2 flex items-center gap-1 text-xs text-success"><span>↑</span> vs. last month</p></article>
+          <article class="rounded-xl border border-line bg-white p-5 shadow-card"><div class="mb-4 flex items-start justify-between"><span class="grid h-10 w-10 place-items-center rounded-lg bg-violet-50 text-violet-600"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0M16 11a3 3 0 1 0-1.1-5.8M17.5 20a5.5 5.5 0 0 0-2.8-4.8"/></svg></span><span class="text-xs font-medium text-success">+14.8%</span></div><p class="text-sm font-medium text-body">Active Users</p><p class="mt-1 text-[28px] font-bold tracking-tight text-heading">3,521</p><p class="mt-2 flex items-center gap-1 text-xs text-success"><span>↑</span> vs. last month</p></article>
+          <article class="rounded-xl border border-line bg-white p-5 shadow-card"><div class="mb-4 flex items-start justify-between"><span class="grid h-10 w-10 place-items-center rounded-lg bg-orange-50 text-warning"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h14l-1 7H6L5 3Z"/><path d="M8 10v4a4 4 0 0 0 8 0v-4"/></svg></span><span class="text-xs font-medium text-success">+2.4%</span></div><p class="text-sm font-medium text-body">Conversion Rate</p><p class="mt-1 text-[28px] font-bold tracking-tight text-heading">4.2%</p><p class="mt-2 flex items-center gap-1 text-xs text-success"><span>↑</span> vs. last month</p></article>
+        </section>
+
+        <!-- The wide row uses a 2fr / 1fr arbitrary grid template at desktop. -->
+        <section id="analytics" class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
+          <article class="min-w-0 rounded-xl border border-line bg-white p-5 shadow-card sm:p-5">
+            <div class="mb-6 flex items-start justify-between gap-4"><div><h2 class="text-base font-semibold text-heading">Revenue Overview</h2><p class="mt-1 text-sm text-body">Monthly revenue performance</p></div><div class="text-right"><p class="text-lg font-bold text-heading">₹1,24,532</p><p class="text-xs font-medium text-success">↑ 12.5%</p></div></div>
+            <div class="relative h-56 pl-9 pb-7"><span class="absolute left-0 top-0 text-[10px] text-body">1.5L</span><span class="absolute left-0 top-1/4 -translate-y-1/2 text-[10px] text-body">1L</span><span class="absolute bottom-1/4 left-0 translate-y-1/2 text-[10px] text-body">50K</span><span class="absolute bottom-6 left-4 text-[10px] text-body">0</span><div class="chart-grid h-full rounded-sm"><svg class="h-full w-full overflow-visible" viewBox="0 0 600 200" preserveAspectRatio="none" role="img" aria-label="Revenue line chart from January to August"><defs><linearGradient id="revenueFill" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#4F46E5" stop-opacity=".22"/><stop offset="1" stop-color="#4F46E5" stop-opacity=".01"/></linearGradient></defs><path d="M0 164 L42 168 L85 151 L128 164 L171 126 L214 85 L257 83 L300 111 L343 91 L386 70 L429 93 L472 58 L515 43 L558 44 L600 15 L600 200 L0 200Z" fill="url(#revenueFill)"/><path d="M0 164 L42 168 L85 151 L128 164 L171 126 L214 85 L257 83 L300 111 L343 91 L386 70 L429 93 L472 58 L515 43 L558 44 L600 15" fill="none" stroke="#4F46E5" stroke-width="3" vector-effect="non-scaling-stroke"/><g fill="#4F46E5" stroke="#fff" stroke-width="2" vector-effect="non-scaling-stroke"><circle cx="0" cy="164" r="4"/><circle cx="85" cy="151" r="4"/><circle cx="171" cy="126" r="4"/><circle cx="257" cy="83" r="4"/><circle cx="343" cy="91" r="4"/><circle cx="429" cy="93" r="4"/><circle cx="515" cy="43" r="4"/><circle cx="600" cy="15" r="4"/></g></svg></div><div class="absolute bottom-0 left-9 right-0 flex justify-between text-[10px] text-body"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span></div></div>
+          </article>
+
+          <article id="orders" class="min-w-0 rounded-xl border border-line bg-white p-5 shadow-card"><div class="mb-5 flex items-center justify-between"><div><h2 class="text-base font-semibold text-heading">Recent Orders</h2><p class="mt-1 text-sm text-body">Latest customer purchases</p></div><a href="#" class="text-sm font-semibold text-active hover:text-indigo-700">View all →</a></div><div class="overflow-x-auto"><table class="w-full min-w-[390px] text-left text-sm"><thead class="border-b border-line text-xs font-medium text-body"><tr><th class="pb-3 font-medium">Customer</th><th class="pb-3 font-medium">Amount</th><th class="pb-3 font-medium">Status</th></tr></thead><tbody class="divide-y divide-slate-100"><tr><td class="py-3.5 font-medium text-heading">Rahul Sharma</td><td class="py-3.5 text-body">₹2,499</td><td class="py-3.5"><span class="rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-success">Delivered</span></td></tr><tr><td class="py-3.5 font-medium text-heading">Priya Singh</td><td class="py-3.5 text-body">₹4,099</td><td class="py-3.5"><span class="rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-600">Processing</span></td></tr><tr><td class="py-3.5 font-medium text-heading">Amit Kumar</td><td class="py-3.5 text-body">₹1,299</td><td class="py-3.5"><span class="rounded-full bg-amber-50 px-2 py-1 text-xs font-medium text-warning">Shipped</span></td></tr><tr><td class="py-3.5 font-medium text-heading">Neha Gupta</td><td class="py-3.5 text-body">₹3,799</td><td class="py-3.5"><span class="rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-success">Delivered</span></td></tr><tr><td class="py-3.5 font-medium text-heading">Sahil Verma</td><td class="py-3.5 text-body">₹5,499</td><td class="py-3.5"><span class="rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-danger">Canceled</span></td></tr></tbody></table></div></article>
+        </section>
+
+        <section class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <article class="rounded-xl border border-line bg-white p-5 shadow-card"><div class="flex items-start justify-between"><div><h2 class="text-base font-semibold text-heading">Traffic Overview</h2><p class="mt-1 text-sm text-body">Total visitors this week</p></div><button class="rounded-md p-1 text-body hover:bg-slate-100" aria-label="Traffic options">•••</button></div><div class="mt-6 flex items-end justify-between"><div><p class="text-2xl font-bold text-heading">8,432</p><p class="mt-1 text-xs text-body">Total Visitors</p></div><p class="text-sm font-semibold text-success">↑ 18%</p></div><div class="mt-5 flex h-32 items-end justify-between gap-2 border-b border-line px-1"><div class="bar h-[42%] flex-1 rounded-t bg-blue-500/90" style="animation-delay:.05s"></div><div class="bar h-[56%] flex-1 rounded-t bg-blue-500/90" style="animation-delay:.1s"></div><div class="bar h-[51%] flex-1 rounded-t bg-blue-500/90" style="animation-delay:.15s"></div><div class="bar h-[62%] flex-1 rounded-t bg-blue-500/90" style="animation-delay:.2s"></div><div class="bar h-[85%] flex-1 rounded-t bg-blue-500/90" style="animation-delay:.25s"></div><div class="bar h-[70%] flex-1 rounded-t bg-blue-500/90" style="animation-delay:.3s"></div><div class="bar h-[88%] flex-1 rounded-t bg-blue-500/90" style="animation-delay:.35s"></div><div class="bar h-full flex-1 rounded-t bg-active" style="animation-delay:.4s"></div></div><div class="mt-2 flex justify-between px-1 text-[10px] text-body"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div></article>
+          <article id="products" class="min-w-0 rounded-xl border border-line bg-white p-5 shadow-card"><div class="mb-5 flex items-center justify-between"><div><h2 class="text-base font-semibold text-heading">Top Products</h2><p class="mt-1 text-sm text-body">Best sellers this month</p></div><a href="#" class="text-sm font-semibold text-active hover:text-indigo-700">View report</a></div><div class="overflow-x-auto"><table class="w-full min-w-[410px] text-left text-sm"><thead class="border-b border-line text-xs text-body"><tr><th class="pb-3 font-medium">Product</th><th class="pb-3 font-medium">Sales</th><th class="pb-3 text-right font-medium">Change</th></tr></thead><tbody class="divide-y divide-slate-100"><tr><td class="py-3 font-medium text-heading">Laptop Pro</td><td class="py-3 text-body">2,450</td><td class="py-3 text-right font-medium text-success">+12%</td></tr><tr><td class="py-3 font-medium text-heading">Wireless Earbuds</td><td class="py-3 text-body">1,892</td><td class="py-3 text-right font-medium text-success">+8%</td></tr><tr><td class="py-3 font-medium text-heading">Smart Watch</td><td class="py-3 text-body">1,203</td><td class="py-3 text-right font-medium text-success">+6%</td></tr><tr><td class="py-3 font-medium text-heading">Backpack</td><td class="py-3 text-body">902</td><td class="py-3 text-right font-medium text-success">+4%</td></tr></tbody></table></div></article>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const sidebar = document.querySelector('#sidebar');
+      const overlay = document.querySelector('#sidebar-overlay');
+      const openButton = document.querySelector('#open-sidebar');
+      const closeButton = document.querySelector('#close-sidebar');
+
+      function setMenu(isOpen) {
+        sidebar.classList.toggle('-translate-x-full', !isOpen);
+        overlay.classList.toggle('hidden', !isOpen);
+        openButton.setAttribute('aria-expanded', String(isOpen));
+        document.body.classList.toggle('overflow-hidden', isOpen);
+      }
+      openButton.addEventListener('click', () => setMenu(true));
+      closeButton.addEventListener('click', () => setMenu(false));
+      overlay.addEventListener('click', () => setMenu(false));
+      window.addEventListener('resize', () => { if (window.innerWidth >= 768) setMenu(false); });
+    </script>
+  </body>
+</html>
