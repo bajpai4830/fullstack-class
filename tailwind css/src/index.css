@@ -1,1 +1,14 @@
 @import "tailwindcss";
+@theme{
+  --color-coffee:red;
+}
+ 
+  .heading{
+    @apply text-3xl font-bold underline text-center bg-blue
+  }
+ .animation{
+   @apply animate-bounce;
+   from{
+     @apply translate-x-0;
+   }
+ }

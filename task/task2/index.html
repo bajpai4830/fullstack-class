@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopKart - Laptops</title>
+  <style>
+    :root { --blue:#2563EB; --red:#DC2626; --black:#111827; --grey:#6B7280; --bg:#F8FAFC; --border:#E5E7EB; --orange:#F59E0B; --white:#FFF; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--black); font:14px Arial, sans-serif; }
+    button, input, select { font:inherit; }
+
+    /* Header */
+    .header { display:flex; align-items:center; gap:28px; padding:16px 5%; border-bottom:1px solid var(--border); background:var(--white); }
+    .logo { display:flex; align-items:center; gap:7px; color:#3730A3; font-size:19px; font-weight:700; text-decoration:none; white-space:nowrap; }
+    .logo-circle { display:grid; place-items:center; width:25px; height:25px; border-radius:50%; background:#4F46E5; color:#fff; font-size:11px; }
+    .search-box { display:flex; align-items:center; max-width:470px; flex:1; padding:0 12px; border-radius:8px; background:#F1F5F9; }
+    .search-box input { width:100%; padding:11px 4px; border:0; outline:0; background:transparent; }
+    .search-icon { color:var(--grey); font-size:18px; }
+    .header-actions { display:flex; align-items:center; gap:17px; margin-left:auto; }
+    .icon-button { padding:4px; border:0; background:transparent; color:var(--black); font-size:20px; cursor:pointer; }
+    .menu-button { display:none; }
+
+    /* Main layout */
+    .page { max-width:1440px; margin:auto; padding:22px 5% 45px; }
+    .breadcrumb { display:flex; gap:10px; margin-bottom:18px; color:var(--grey); font-size:13px; }
+    .breadcrumb a { color:var(--blue); text-decoration:none; }
+    .catalogue { display:grid; grid-template-columns:240px minmax(0, 1fr); gap:32px; }
+
+    /* Filter panel */
+    .filters { padding:18px; border:1px solid var(--border); border-radius:12px; background:var(--white); }
+    .filters h2 { margin:0 0 20px; font-size:16px; font-weight:600; }
+    .filter-section { margin-top:20px; }
+    .filter-section h3 { margin:0 0 11px; font-size:14px; }
+    .filter-option { display:block; margin:9px 0; color:var(--grey); cursor:pointer; }
+    .filter-option input { margin:0 7px 0 0; accent-color:var(--blue); }
+    .apply-button, .add-button { border:1px solid var(--blue); border-radius:6px; background:var(--blue); color:#fff; font-weight:600; cursor:pointer; transition:background .2s; }
+    .apply-button { width:100%; margin-top:15px; padding:10px; }
+    .apply-button:hover, .add-button:hover { background:#1D4ED8; }
+
+    /* Products: CSS Grid outside, Flexbox inside each card */
+    .products-top { display:flex; justify-content:space-between; align-items:center; margin:10px 0 17px; }
+    .product-count { color:var(--grey); }
+    .sort-select { padding:8px 10px; border:1px solid var(--border); border-radius:7px; background:var(--white); color:var(--grey); }
+    .filter-mobile { display:none; }
+    .product-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:24px; }
+    .product-card { display:flex; flex-direction:column; min-width:0; padding:12px; overflow:hidden; border:1px solid var(--border); border-radius:12px; background:var(--white); transition:box-shadow .2s, transform .2s; }
+    .product-card:hover { box-shadow:0 10px 22px rgba(17,24,39,.12); transform:translateY(-3px); }
+    .product-image { position:relative; display:grid; place-items:center; height:220px; overflow:hidden; }
+    .product-image img { width:100%; height:100%; object-fit:contain; transition:transform .25s; }
+    .product-card:hover .product-image img { transform:scale(1.08); }
+    .badge { position:absolute; z-index:1; top:2px; left:2px; padding:5px 8px; border-radius:5px; color:#fff; font-size:11px; font-weight:700; }
+    .sale { background:var(--red); } .new { background:#10B981; }
+    .wish { position:absolute; z-index:1; top:2px; right:2px; border:0; background:transparent; color:var(--grey); font-size:21px; cursor:pointer; }
+    .category { margin:6px 0; color:var(--grey); font-size:13px; }
+    .product-name { margin:0 0 9px; font-size:16px; font-weight:600; line-height:1.35; }
+    .price-row { display:flex; align-items:baseline; gap:8px; margin-top:auto; }
+    .price { font-size:20px; font-weight:700; }
+    .old-price { color:var(--grey); font-size:14px; text-decoration:line-through; }
+    .rating { margin:8px 0 12px; color:var(--orange); font-size:14px; }
+    .rating span { color:var(--grey); }
+    .add-button { width:100%; padding:10px; }
+
+    @media (min-width:1280px) { .product-grid { grid-template-columns:repeat(4, minmax(0, 1fr)); } }
+
+    /* Tablet: filters form a horizontal bar, products use two columns */
+    @media (min-width:640px) and (max-width:1023px) {
+      .catalogue { display:block; }
+      .filters { display:flex; align-items:center; gap:18px; margin-bottom:20px; padding:12px 16px; }
+      .filters h2, .filter-section h3 { margin:0; }
+      .filter-section { display:flex; gap:10px; margin:0; }
+      .filter-option { margin:0; white-space:nowrap; }
+      .apply-button { width:auto; margin:0 0 0 auto; padding:8px 12px; }
+      .product-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+    }
+
+    /* Mobile: filters hide behind a button and cards use one column */
+    @media (max-width:639px) {
+      .header { gap:12px; padding:13px 5%; }
+      .search-box { order:3; flex-basis:100%; max-width:none; }
+      .menu-button { display:block; }
+      .header-actions { gap:8px; }
+      .cart-button { display:none; }
+      .page { padding-top:16px; }
+      .catalogue { display:block; }
+      .filter-mobile { display:inline-block; margin-bottom:15px; padding:9px 12px; border:1px solid var(--border); border-radius:7px; background:var(--white); color:var(--black); cursor:pointer; }
+      .filters { display:none; margin-bottom:15px; }
+      .filters.open { display:block; }
+      .products-top { margin-top:0; }
+      .product-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a class="logo" href="#"><span class="logo-circle">SK</span>ShopKart</a>
+    <div class="search-box"><input type="search" placeholder="Search for products..."><span class="search-icon">⌕</span></div>
+    <div class="header-actions">
+      <button class="icon-button cart-button" type="button" aria-label="Shopping cart">🛒</button>
+      <button class="icon-button" type="button" aria-label="User account">♙</button>
+      <button class="icon-button menu-button" type="button" aria-label="Menu">☰</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="breadcrumb"><a href="#">Electronics</a><span>›</span><span>Laptops</span></div>
+    <button class="filter-mobile" type="button" aria-expanded="false">☷ Filters</button>
+
+    <div class="catalogue">
+      <aside class="filters">
+        <h2>Filters</h2>
+        <div class="filter-section">
+          <h3>Category</h3>
+          <label class="filter-option"><input type="checkbox"> Laptops</label>
+          <label class="filter-option"><input type="checkbox"> Desktops</label>
+          <label class="filter-option"><input type="checkbox"> Tablets</label>
+          <label class="filter-option"><input type="checkbox"> Accessories</label>
+        </div>
+        <div class="filter-section">
+          <h3>Price Range</h3>
+          <label class="filter-option"><input type="checkbox"> ₹0 - ₹25,000</label>
+          <label class="filter-option"><input type="checkbox"> ₹25,000 - ₹50,000</label>
+          <label class="filter-option"><input type="checkbox"> ₹50,000 - ₹75,000</label>
+          <label class="filter-option"><input type="checkbox"> ₹75,000+</label>
+        </div>
+        <div class="filter-section">
+          <h3>Brand</h3>
+          <label class="filter-option"><input type="checkbox"> Dell</label>
+          <label class="filter-option"><input type="checkbox"> HP</label>
+          <label class="filter-option"><input type="checkbox"> Lenovo</label>
+          <label class="filter-option"><input type="checkbox"> Apple</label>
+        </div>
+        <button class="apply-button" type="button">Apply Filters</button>
+      </aside>
+
+      <section class="products">
+        <div class="products-top">
+          <span class="product-count">Showing 12 results</span>
+          <label>Sort by: <select class="sort-select"><option>Popularity</option><option>Price: Low to High</option><option>Newest</option></select></label>
+        </div>
+
+        <div class="product-grid">
+          <article class="product-card">
+            <div class="product-image"><span class="badge sale">SALE</span><button class="wish" aria-label="Favourite Dell Inspiron 15">♡</button><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=600&q=80" alt="Dell Inspiron 15 laptop"></div>
+            <p class="category">Dell</p><h2 class="product-name">Dell Inspiron 15</h2><div class="price-row"><span class="price">₹45,990</span><span class="old-price">₹55,990</span></div><div class="rating">★ 4.5 <span>(123)</span></div><button class="add-button">Add to Cart</button>
+          </article>
+          <article class="product-card">
+            <div class="product-image"><span class="badge new">NEW</span><button class="wish" aria-label="Favourite HP Pavilion">♡</button><img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80" alt="HP Pavilion laptop"></div>
+            <p class="category">HP</p><h2 class="product-name">HP Pavilion</h2><div class="price-row"><span class="price">₹52,990</span><span class="old-price">₹60,990</span></div><div class="rating">★ 4.3 <span>(92)</span></div><button class="add-button">Add to Cart</button>
+          </article>
+          <article class="product-card">
+            <div class="product-image"><button class="wish" aria-label="Favourite Lenovo IdeaPad 5">♡</button><img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=600&q=80" alt="Lenovo IdeaPad laptop"></div>
+            <p class="category">Lenovo</p><h2 class="product-name">Lenovo IdeaPad 5</h2><div class="price-row"><span class="price">₹38,990</span></div><div class="rating">★ 4.2 <span>(654)</span></div><button class="add-button">Add to Cart</button>
+          </article>
+          <article class="product-card">
+            <div class="product-image"><button class="wish" aria-label="Favourite MacBook Air M2">♡</button><img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80" alt="MacBook Air M2 laptop"></div>
+            <p class="category">Apple</p><h2 class="product-name">MacBook Air M2</h2><div class="price-row"><span class="price">₹92,990</span><span class="old-price">₹99,900</span></div><div class="rating">★ 4.8 <span>(1.5k)</span></div><button class="add-button">Add to Cart</button>
+          </article>
+          <article class="product-card">
+            <div class="product-image"><span class="badge new">NEW</span><button class="wish" aria-label="Favourite ASUS Vivobook">♡</button><img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=600&q=80" alt="ASUS Vivobook laptop"></div>
+            <p class="category">ASUS</p><h2 class="product-name">ASUS Vivobook</h2><div class="price-row"><span class="price">₹41,990</span><span class="old-price">₹49,990</span></div><div class="rating">★ 4.4 <span>(721)</span></div><button class="add-button">Add to Cart</button>
+          </article>
+          <article class="product-card">
+            <div class="product-image"><button class="wish" aria-label="Favourite Dell XPS 13">♡</button><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=600&q=80" alt="Dell XPS 13 laptop"></div>
+            <p class="category">Dell</p><h2 class="product-name">Dell XPS 13</h2><div class="price-row"><span class="price">₹89,990</span></div><div class="rating">★ 4.6 <span>(143)</span></div><button class="add-button">Add to Cart</button>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const filterButton = document.querySelector('.filter-mobile');
+    const filters = document.querySelector('.filters');
+    filterButton.addEventListener('click', function () {
+      filters.classList.toggle('open');
+      filterButton.setAttribute('aria-expanded', filters.classList.contains('open'));
+    });
+  </script>
+</body>
+</html>
