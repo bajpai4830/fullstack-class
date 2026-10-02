@@ -3,9 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>GLA University</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            padding: 8px 28px;
+            box-shadow: 0 2px 5px rgb(0, 0, 0);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #176b70;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logo img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .links {
+            display: flex;
+            gap: 50px;
+        }
+
+        .links a {
+            color: #18324b;
+            text-decoration: none;
+        }
+
+        .register {
+            padding: 10px 20px;
+            color: white;
+            background-color: #1e5fe2;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    hello
+    <div class="navbar">
+        <div class="logo" style>
+            <img src="glalogo.jpg" alt="GLA logo">
+            <span>GLA University</span>
+        </div>
+
+        <div class="links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#events">Events</a>
+            <a href="#contact">Contact</a>
+        </div>
+
+        <a class="register" href="#register">Register Now</a>
+    </div>
 </body>
 </html>
