@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Rock Paper Scissors</h2>
+
+    <button onclick="play('rock')">Rock</button>
+    <button onclick="play('paper')">Paper</button>
+    <button onclick="play('scissors')">Scissors</button>
+
+    <h3 id="result"></h3>
+    <h3 id="score">Computer : 0   | You : 0</h3>
+    
+    <script>
+        let cscore=0;
+        let yscore=0;
+        let cnt=3;
+        function play(user) {
+            let choices = ["rock", "paper", "scissors"];
+            let computer = choices[Math.floor(Math.random() * 3)];
+
+            let result;
+            if(yscore === 3 || cscore===3){
+                document.getElementById("score").innerHTML=
+                "Computer :" + cscore+ "  | You kthm :"+ yscore;
+            }
+            if (user === computer) {
+                result = "It's a Draw!";
+            } else if (
+                (user === "rock" && computer === "scissors") ||
+                (user === "paper" && computer === "rock") ||
+                (user === "scissors" && computer === "paper")
+            ) {
+                result = "You   Win!";
+                yscore++;
+            } else {
+                result = "Computerr Wins!";
+                cscore++;
+            }
+            document.getElementById("result").innerHTML =
+                "You chose: " + user +
+                "<br>Computer chose: " + computer +
+                "<br>" + result;
+            document.getElementById("score").innerHTML=
+                "Computer :" + cscore+ "  | You :"+ yscore;
+        }
+    </script>
+</body>
+</html>

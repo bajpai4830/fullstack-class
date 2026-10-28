@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reaction Timer</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        #box {
+            background: red;
+            color: white;
+            padding: 100px 20px;
+            margin: 30px auto;
+            width: 300px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Reaction Timer</h1>
+    <p>Press SPACE or any key to play!</p>
+
+    <div id="box" onclick="play()">
+        Press any key to start
+    </div>
+
+    <h2 id="result">Your time: --</h2>
+    <h3 id="best">Best time: 91 ms</h3>
+
+    <script>
+        let box = document.getElementById("box");
+        let result = document.getElementById("result");
+        let bestText = document.getElementById("best");
+
+        let timer;
+        let startTime;
+        let state = "idle";
+        let best = localStorage.getItem("bestTime");
+
+        if (best !== null) {
+            bestText.innerText = "Best time: " + best + " ms";
+        }
+
+        function play() {
+            if (state === "idle") {
+                state = "waiting";
+                box.style.background = "red";
+                box.innerText = "Wait for GREEN...";
+                result.innerText = "Your time: --";
+
+                let delay = Math.random() * 3000 + 1000;
+
+                timer = setTimeout(function() {
+                    box.style.background = "green";
+                    box.innerText = "PRESS NOW!";
+                    startTime = Date.now();
+                    state = "ready";
+                }, delay);
+
+            } else if (state === "waiting") {
+                clearTimeout(timer);
+                state = "idle";
+                box.innerText = "Too early! Press any key to retry";
+                result.innerText = "Too early!";
+
+            } else if (state === "ready") {
+                let reaction = Date.now() - startTime;
+
+                result.innerText = "Your time: " + reaction + " ms";
+
+                if (best === null || reaction < Number(best)) {
+                    best = reaction;
+                    localStorage.setItem("bestTime", best);
+                    bestText.innerText = "Best time: " + best + " ms";
+                }
+
+                state = "idle";
+                box.style.background = "red";
+                box.innerText = "Press any key to play again";
+            }
+        }
+
+        document.addEventListener("keydown", function(event) {
+            if (event.code === "Space") {
+                event.preventDefault();
+            }
+
+            if (event.repeat) return;
+
+            play();
+        });
+    </script>
+
+</body>
+</html>

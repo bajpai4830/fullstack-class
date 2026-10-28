@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Guess the Number</title>
+</head>
+<body>
+    <h2>Guess the Number (1-100)</h2>
+
+    <input type="number" id="guess" placeholder="Enter your guess">
+    <button onclick="checkGuess()">Guess</button>
+
+    <p id="result"></p>
+    <p id="attempts">Attempts: 0</p>
+
+
+
+    <script>
+        let number = Math.floor(Math.random() * 99) + 1;
+        let cnt = 0;
+
+        function checkGuess() {
+            let guess = Number(document.getElementById("guess").value);
+            let result = document.getElementById("result")
+            cnt++;
+            if(cnt > 7){
+                result.innerText="Out of limits!";
+            }
+            else if (guess === number) {
+                result.innerText = "Correct! You guessed the number!";
+            } else if (guess < number) {
+                result.innerText = "Too low!!! Try a higher number.";
+            } else {
+                result.innerText = "Too High! Try a lower number.";
+            }
+            document.getElementById("attempts").innerText =
+                "Attempts: " + cnt;
+        }
+    </script>
+    
+</body>
+</html>
